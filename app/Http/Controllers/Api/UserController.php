@@ -7,6 +7,10 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -17,8 +21,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        return UserResource::collection(User::query()->orderBy('id', 'desc')->paginate(10));
-    }
+        $userId = Auth::id();
+    // Utilisez $userId comme nécessaire dans votre logique
+    return UserResource::collection(User::query()->orderBy('id', 'desc')->paginate(100));
+/*         return UserResource::collection(User::query()->orderBy('id', 'desc')->paginate(10));
+ */    }
 
     /**
      * Store a newly created resource in storage.
@@ -30,6 +37,9 @@ class UserController extends Controller
     {
         $data = $request->validated();
         $data['password'] = bcrypt($data['password']);
+
+
+
         $user = User::create($data);
 
         return response(new UserResource($user) , 201);
@@ -59,6 +69,7 @@ class UserController extends Controller
         if (isset($data['password'])) {
             $data['password'] = bcrypt($data['password']);
         }
+
         $user->update($data);
 
         return new UserResource($user);
@@ -76,4 +87,31 @@ class UserController extends Controller
 
         return response("", 204);
     }
+
+    public function __construct()
+{
+    $this->middleware('auth:sanctum')->except(['index']);
+}
+
+
+public function updatePhoto(Request $request, User $user)
+{
+    $request->validate([
+        'photo' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
+
+    if ($request->hasFile('photo')) {
+        // Supprimez  photo si elle existe
+        if ($user->photo && Storage::disk('public')->exists($user->photo)) {
+            Storage::disk('public')->delete($user->photo);
+        }
+
+        // Enregistrez la nouvelle photo
+        $photoPath = $request->file('photo')->store('uploads', 'public');
+        $user->update(['photo' => $photoPath]);
+    }
+
+
+    return new UserResource($user);
+}
 }
