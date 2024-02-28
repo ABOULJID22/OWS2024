@@ -13,7 +13,6 @@ export default function Signup() {
 
   const onSubmit = ev => {
     ev.preventDefault()
-
     const payload = {
       name: nameRef.current.value,
       email: emailRef.current.value,
@@ -24,6 +23,8 @@ export default function Signup() {
       .then(({data}) => {
         setUser(data.user)
         setToken(data.token);
+        navigate("/home");
+
       })
       .catch(err => {
         const response = err.response;
@@ -45,11 +46,11 @@ export default function Signup() {
               ))}
             </div>
           }
-          <input ref={nameRef} type="text" placeholder="Full Name"/>
-          <input ref={emailRef} type="email" placeholder="Email Address"/>
-          <input ref={passwordRef} type="password" placeholder="Password"/>
-          <input ref={passwordConfirmationRef} type="password" placeholder="Repeat Password"/>
-          <button className="btn btn-block">Signup</button>
+          <input ref={nameRef} type="text" className="m-2" placeholder="Full Name"/>
+          <input ref={emailRef} type="email" className="m-2" placeholder="Email Address"/>
+          <input ref={passwordRef} type="password" className="m-2" placeholder="Password"/>
+          <input ref={passwordConfirmationRef} className="m-2" type="password" placeholder="Repeat Password"/>
+          <button className="btn btn-block bg-primary m-2" >Signup</button>
           <p className="message">Already registered? <Link to="/login">Sign In</Link></p>
         </form>
       </div>

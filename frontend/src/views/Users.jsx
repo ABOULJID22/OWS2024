@@ -7,7 +7,7 @@ export default function Users() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const {setNotification} = useStateContext()
-
+  const [totalUsers, setTotalUsers] = useState(0);
   useEffect(() => {
     getUsers();
   }, [])
@@ -29,6 +29,7 @@ export default function Users() {
       .then(({ data }) => {
         setLoading(false)
         setUsers(data.data)
+        setTotalUsers(data.data.length);
       })
       .catch(() => {
         setLoading(false)
@@ -38,9 +39,10 @@ export default function Users() {
   return (
     <div>
       <div style={{display: 'flex', justifyContent: "space-between", alignItems: "center"}}>
-        <h1>Users</h1>
+        <h1>Welcom Back Admin !</h1>
         <Link className="btn-add" to="/users/new">Add new</Link>
       </div>
+       <p>Total Users: {totalUsers}</p>
       <div className="card animated fadeInDown">
         <table>
           <thead>
@@ -48,6 +50,7 @@ export default function Users() {
             <th>ID</th>
             <th>Name</th>
             <th>Email</th>
+            <th>Ville</th>
             <th>Create Date</th>
             <th>Actions</th>
           </tr>
@@ -68,6 +71,7 @@ export default function Users() {
                 <td>{u.id}</td>
                 <td>{u.name}</td>
                 <td>{u.email}</td>
+                <td>{u.ville}</td>
                 <td>{u.created_at}</td>
                 <td>
                   <Link className="btn-edit" to={'/users/' + u.id}>Edit</Link>

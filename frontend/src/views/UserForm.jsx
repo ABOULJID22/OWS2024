@@ -10,6 +10,12 @@ export default function UserForm() {
     id: null,
     name: '',
     email: '',
+    telephone: '',
+    sexe: '',
+    nationalite: '',
+    photo: '',
+    adresse: '',
+    ville: '',
     password: '',
     password_confirmation: ''
   })
@@ -81,6 +87,11 @@ export default function UserForm() {
           <form onSubmit={onSubmit}>
             <input value={user.name} onChange={ev => setUser({...user, name: ev.target.value})} placeholder="Name"/>
             <input value={user.email} onChange={ev => setUser({...user, email: ev.target.value})} placeholder="Email"/>
+            <input value={user.telephone} onChange={ev => setUser({...user, telephone: ev.target.value})} placeholder="Telephone"/>
+            <input value={user.sexe} onChange={ev => setUser({...user, sexe: ev.target.value})} placeholder="Sexe"/>
+            <input value={user.ville} onChange={ev => setUser({...user, ville: ev.target.value})} placeholder="Ville"/>
+            <input value={user.adresse} onChange={ev => setUser({...user, adresse: ev.target.value})} placeholder="Anationalitedresse"/>
+            <input value={user.nationalite} onChange={ev => setUser({...user, nationalite: ev.target.value})} placeholder="Nationalite"/>
             <input type="password" onChange={ev => setUser({...user, password: ev.target.value})} placeholder="Password"/>
             <input type="password" onChange={ev => setUser({...user, password_confirmation: ev.target.value})} placeholder="Password Confirmation"/>
             <button className="btn">Save</button>

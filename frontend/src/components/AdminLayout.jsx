@@ -1,13 +1,14 @@
-import {Link, Navigate, Outlet} from "react-router-dom";
+import {Link, Navigate, Outlet,useNavigate} from "react-router-dom";
 import {useStateContext} from "../contexts/ContextProvider.jsx";
 import axiosClient from "../axois-client.js";
-import {useEffect} from "react";
+import {useEffect,useState} from "react";
 
 export default function AdminLayout() {
   const {user, token, setUser, setToken, notification} = useStateContext();
-
+  const navigate = useNavigate();
+  const [currentDateTime, setCurrentDateTime] = useState("");
   if (!token) {
-    return <Navigate to="/login"/>
+    return <Navigate to="/home"/>
   }
 
   const onLogout = ev => {
@@ -17,8 +18,21 @@ export default function AdminLayout() {
       .then(() => {
         setUser({})
         setToken(null)
+        navigate("/Guesthome");
       })
   }
+
+//datetime
+  useEffect(() => {
+     const interval = setInterval(() => {
+      const now = new Date();
+      setCurrentDateTime(now.toLocaleString());
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   useEffect(() => {
     axiosClient.get('/user')
@@ -32,16 +46,22 @@ export default function AdminLayout() {
       <aside>
         <Link to="/dashboard">Dashboard</Link>
         <Link to="/users">Users</Link>
+
       </aside>
       <div className="content">
         <header>
           <div>
             Header
           </div>
+          <div>{currentDateTime}</div>
+          <Link className="p-4" to="/Home">To Home Page</Link>
 
           <div>
+
+
             {user.name} &nbsp; &nbsp;
             <a onClick={onLogout} className="btn-logout" href="#">Logout</a>
+
           </div>
         </header>
         <main>

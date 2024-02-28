@@ -3,15 +3,14 @@ import {useStateContext} from "../contexts/ContextProvider.jsx";
 import axiosClient from "../axois-client.js";
 import {useEffect} from "react";
 import NavBar from "../views/Navbar.jsx";
+import Footr from "../views/Footr.jsx";
 
 export default function DefaultLayout() {
   const {token, setUser, notification} = useStateContext();
 
- /*  if (!token) {
-    return <Navigate to="/login"/>
-  }
 
- */
+
+
 
   useEffect(() => {
     axiosClient.get('/user')
@@ -22,8 +21,9 @@ export default function DefaultLayout() {
 
   return (
     <><NavBar/>
-    
           <Outlet/>
+          <Footr/>
+
 
         {notification &&
           <div className="notification">

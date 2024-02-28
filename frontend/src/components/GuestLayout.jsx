@@ -9,10 +9,13 @@ export default function GuestLayout() {
     return <Navigate to="/home" />;
   }
 
+
   return (
     <div id="guestLayout">
       <NavBar />
+
       <Outlet />
+
       <Footr/>
 
 
